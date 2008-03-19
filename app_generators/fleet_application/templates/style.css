@@ -1,0 +1,8 @@
+BODY { background: #3E2B09; text-align: center; font-family: sans-serif; }
+h1 { color: white; }
+p { color: #ccd69f; }
+div { background: #ccd69f; color: black; width: 450px; padding: 10px; margin: auto; border: 2px solid #aab47d;}
+div h2 { font-size: 14pt; color: #33400a; margin: 0px; }
+div ul { list-style-type: none; }
+div ul li { padding: 0px; margin: 8px 0px; text-align: left; }
+A { color: white; }

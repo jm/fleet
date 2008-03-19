@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>
+      Welcome to Fleet
+    </title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <img src="fleet.png" />
+    <h1>Welcome to Fleet</h1>
+    <p>
+      Come on in and relax.  Actually, don't relax.  Build something.
+    </p>
+    <div>
+      <h2>Request Information</h2>  
+      <ul>
+        <li>Remote IP: <%= request.remote_ip %></li>
+        <li>Referer: <%= request.referer %></li>
+        <li>Requested URI: <%= request.url %></li>
+        <li>Request method: <%= request.request_method %></li>
+        <li>User agent: <%= request.user_agent %></li>
+        <li>Query string: <%= request.query_string %></li>
+        <li>Parameters: <%= request.params == {} ? "None" : request.params.to_a.map{|k,v| "#{k} = #{v}"}.join(", ") %></li>
+      </ul>
+    </div>
+    <br />
+    <%= link_to "Fleet homepage", "http://fleet.rubyforge.org" %>
+  </body>
+</html>

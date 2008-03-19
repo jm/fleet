@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+#
+#  Created by Jeremy McAnally on 2008-1-1.
+#  Copyright (c) 2008. All rights reserved.
+
+$:.unshift File.dirname(__FILE__)
+require File.dirname(__FILE__) + '/../lib/fleet'
+
+require 'rubygems'
+require 'optparse'
+require 'rubigen'
+
+# NOTE: the option -p/--path= is given as an example, and should probably be replaced in your application.
+
+OPTIONS = {
+  :path         => Dir.pwd,
+  :static_path  => Dir.pwd,
+  :port         => 5000,
+  :config       => 'configuration.yml',
+  :templates    => 'erb',
+  :mount        => '/',
+  :root         => 'index',
+  :server       => 'mongrel'
+}
+MANDATORY_OPTIONS = %w(  )
+
+parser = OptionParser.new do |opts|
+  opts.banner = <<BANNER
+  
+Fleet - v.#{Fleet::VERSION::STRING}
+=================
+A model-view-controller framework for
+tap dancers and budding plutarchs.
+
+Usage: #{File.basename($0)} [options]
+       #{File.basename($0)} [project name]
+
+Options are:
+BANNER
+  opts.separator ""
+  opts.on("-P", "--port=PORT", Integer,
+          "The port to serve up your Fleet application on",
+          "Default: 5000") { |OPTIONS[:port]| }
+  opts.on("-m", "--mount-at=url", String,
+          "The relative URL to mount this application at (e.g., fleet -m myapp will mount at http://localhost/myapp)",
+          "Default: none (mounted at /)") { |OPTIONS[:mount]| }
+  opts.on("-s", "--server=server", String,
+          "The server daemon to use (can be mongrel, webrick, cgi, or fastcgi)",
+          "Default: mongrel") { |OPTIONS[:server]| }
+  opts.on("-h", "--help",
+          "Show this help message.") { puts opts; exit }
+  opts.parse!(ARGV)
+end
+
+if ARGV.empty?
+  puts parser
+  puts
+elsif ARGV[0] == "start"
+  if OPTIONS[:server] == 'swift'
+    require 'swiftcore/swiftiplied_mongrel'
+  end
+  
+  OPTIONS.merge!(YAML::load_file(OPTIONS[:config])) if File.exists?(OPTIONS[:config])
+  Fleet::Server.run(OPTIONS)
+else
+  require 'rubigen/scripts/generate'
+  source = RubiGen::PathSource.new(:application, File.join(File.dirname(__FILE__), "../app_generators"))
+  RubiGen::Base.reset_sources
+  RubiGen::Base.append_sources source
+  RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'fleet_application')
+end

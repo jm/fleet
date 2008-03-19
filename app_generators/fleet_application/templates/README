@@ -1,0 +1,6 @@
+Fleet - The super slim web framework for men and women
+========================================================
+
+Fleet is a very small web framework based on the original idea of Merb: Mongrel serving up
+ERb (Embedded Ruby) templates.  The idea has been expanded and now Fleet helps you serve up
+ERb, HAML, Textile, Markdown, and Markaby templates.
